@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MoviTEA — Desktop</title>
+<link rel="stylesheet" href="desktop.css">
+</head>
+<body>
+
+<nav class="sidebar">
+  <div class="logo"></div>
+  <button class="tab-btn active" data-tab="tela-inicio"><span class="ic"><img src="img/home.png" alt="Início"></span>Início</button>
+  <button class="tab-btn" data-tab="tela-registros"><span class="ic"><img src="img/calendario.png" alt="Registros"></span>Registros</button>
+  <button class="tab-btn" data-tab="tela-resumo"><span class="ic"><img src="img/papel.png" alt="Resumo"></span>Resumo</button>
+  <button class="tab-btn" data-tab="tela-perfil"><span class="ic"><img src="img/icone_conta.png" alt="Perfil"></span>Perfil</button>
+</nav>
+
+<div class="main">
+  <header class="cabecalho">
+    <button class="hamb" id="btnMenu" aria-label="Abrir menu"><span></span><span></span><span></span></button>
+    <div class="boas-vindas"><h2>Olá, Ana!</h2><p>Como você está hoje?</p></div>
+    <button class="sino" id="btnSino" aria-label="Notificações"><img src="img/sino.png" alt="Notificações"><span class="badge">1</span></button>
+  </header>
+
+  <div class="corpo">
+
+    <section class="screen active" id="tela-inicio">
+      <div class="banner"><span class="avatar"></span><span>Aqui você encontra informações, registra sua rotina e se organiza para cuidar de você.</span></div>
+      <h3 class="titulo-modulos">Meus módulos</h3>
+      <div class="grid">
+        <button class="mod" data-nome="Meu perfil de suporte"><span class="ic"><img src="img/suporte.png" alt="Meu perfil de suporte"></span>Meu perfil de suporte</button>
+        <button class="mod" data-nome="Movimento possível"><span class="ic"><img src="img/movimento.png" alt="Movimento possível"></span>Movimento possível</button>
+        <button class="mod" data-nome="Sono e rotina"><span class="ic"><img src="img/rotina.png" alt="Sono e rotina"></span>Sono e rotina</button>
+        <button class="mod" data-nome="Dor e desconforto"><span class="ic"><img src="img/desconforto.png" alt="Dor e desconforto"></span>Dor e desconforto</button>
+        <button class="mod" data-nome="Após uma sobrecarga"><span class="ic"><img src="img/sobrecarga.png" alt="Apos uma sobrecarga"></span>Após uma sobrecarga</button>
+        <button class="mod" data-nome="Sinais de alerta"><span class="ic"><img src="img/sinais_alerta.png" alt="Sinais de alerta"></span>Sinais de alerta</button>
+        <button class="mod" data-nome="Rede Foz"><span class="ic"><img src="img/rede_foz.png" alt="Rede foz"></span>Rede Foz</button>
+        <button class="mod" data-nome="Biblioteca acessível"><span class="ic"><img src="img/biblioteca.png" alt="Biblioteca acessivel"></span>Biblioteca acessível</button>
+      </div>
+    </section>
+
+    <section class="screen" id="tela-modulo">
+      <div class="tela-conteudo">
+        <button class="voltar" data-voltar="tela-inicio">← Voltar</button>
+        <h2 id="modulo-titulo">Módulo</h2>
+        <div class="placeholder">Conteúdo em breve — esta tela ainda vai ser preenchida.</div>
+      </div>
+    </section>
+
+    <section class="screen" id="tela-registros">
+      <div class="tela-conteudo"><h2>Registros</h2><div class="placeholder">Conteúdo em breve.</div></div>
+    </section>
+
+    <section class="screen" id="tela-resumo">
+      <div class="tela-conteudo"><h2>Resumo</h2><div class="placeholder">Conteúdo em breve.</div></div>
+    </section>
+
+    <section class="screen" id="tela-perfil">
+      <div class="tela-conteudo"><h2>Perfil</h2><div class="placeholder">Conteúdo em breve.</div></div>
+    </section>
+
+  </div>
+</div>
+
+<div class="overlay" id="overlayMenu">
+  <div class="drawer">
+    <button class="fechar" id="fecharMenu">✕</button>
+    <h3>MoviTEA</h3>
+    <ul><li>Configurações</li><li>Acessibilidade</li><li>Ajuda</li><li>Sair</li></ul>
+  </div>
+</div>
+
+<div class="painel-notif" id="painelNotif">
+  <h4>Notificações</h4>
+  <p>Você não tem novas notificações no momento.</p>
+</div>
+
+<script>
+function mostrarTela(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active', b.dataset.tab===id));
+  document.querySelector('.corpo').scrollTop = 0;
+}
+document.querySelectorAll('.tab-btn').forEach(btn=>btn.addEventListener('click', ()=> mostrarTela(btn.dataset.tab)));
+document.querySelectorAll('.voltar').forEach(btn=>btn.addEventListener('click', ()=> mostrarTela(btn.dataset.voltar)));
+document.querySelectorAll('.mod').forEach(btn=>btn.addEventListener('click', ()=>{
+  document.getElementById('modulo-titulo').textContent = btn.dataset.nome;
+  mostrarTela('tela-modulo');
+}));
+
+const overlayMenu = document.getElementById('overlayMenu');
+document.getElementById('btnMenu').addEventListener('click', ()=> overlayMenu.classList.add('active'));
+document.getElementById('fecharMenu').addEventListener('click', ()=> overlayMenu.classList.remove('active'));
+overlayMenu.addEventListener('click', (e)=>{ if(e.target===overlayMenu) overlayMenu.classList.remove('active'); });
+
+const painel = document.getElementById('painelNotif');
+document.getElementById('btnSino').addEventListener('click', (e)=>{ e.stopPropagation(); painel.classList.toggle('active'); });
+document.addEventListener('click', (e)=>{ if(!painel.contains(e.target) && e.target.id!=='btnSino') painel.classList.remove('active'); });
+</script>
+</body>
+</html>
